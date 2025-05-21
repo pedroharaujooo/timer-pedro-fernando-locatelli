@@ -4,44 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de tempo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1d2b64, #f8cdda);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px #00000066;
+        }
+
+        #timer {
+            font-size: 3rem;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px #00000066;
+        }
+
+        button {
+            padding: 12px 24px;
+            margin-top: 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #ffffff33;
+            color: white;
+            backdrop-filter: blur(4px);
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ffffff55;
+        }
+
+        hr {
+            width: 80%;
+            margin: 40px 0;
+            border: 1px solid #ffffff44;
+        }
+    </style>
 </head>
 <body>
     <h2 id="relogio"></h2>
-        <script>
-            function atualizarRelogio(){
-                const agora = new Date();
-                const horas = agora.getHours().toString();
-                const minut = agora.getMinutes().toString();
-                const segun = agora.getSeconds().toString();
 
-                document.getElementById("relogio").innerText = `${horas}:${minut}:${segun}`;
+    <hr>
 
-            }
-            setInterval(atualizarRelogio, 1000);
-            atualizarRelogio();
-        </script>
-        <hr>
-        <script>
-            let segundos = 0;
-            let intervalo;
+    <div id="timer">0:0:0</div>
+    <button onclick="iniciar()">Iniciar Timer</button>
 
-            function formatar(segundos){
-                const h = String(Math.floor(segundos/3600));
-                const m = String(Math.floor((segundos % 3600)/60));
-                const s = String(segundos % 60);
-                return `${h}:${m}:${s}`;
+    <script>
+        function atualizarRelogio(){
+            const agora = new Date();
+            const horas = agora.getHours().toString().padStart(2, '0');
+            const minut = agora.getMinutes().toString().padStart(2, '0');
+            const segun = agora.getSeconds().toString().padStart(2, '0');
+            document.getElementById("relogio").innerText = `${horas}:${minut}:${segun}`;
+        }
+        setInterval(atualizarRelogio, 1000);
+        atualizarRelogio();
+    </script>
+
+    <script>
+        let segundos = 0;
+        let intervalo;
+
+        function formatar(segundos){
+            const h = String(Math.floor(segundos / 3600)).padStart(2, '0');
+            const m = String(Math.floor((segundos % 3600) / 60)).padStart(2, '0');
+            const s = String(segundos % 60).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function atualizarTimer(){
+            document.getElementById("timer").innerText = formatar(segundos);
+        }
+
+        function iniciar(){
+            if(!intervalo){
+                intervalo = setInterval(() => {
+                    segundos++;
+                    atualizarTimer();
+                }, 1000);
             }
-            function atualizarTimer(){
-                document.getElementById("timer").innerText = formatar(segundos);
-            }
-            function iniciar(){
-                if(!intervalo){
-                    intervalo = setInterval(() =>{
-                        segundos++;
-                        atualizarTImer();
-                    }, 1000);
-                }
-            }
-        </script>
+        }
+    </script>
 </body>
 </html>
